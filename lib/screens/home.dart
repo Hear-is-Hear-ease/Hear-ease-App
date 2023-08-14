@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(isListening ? 'Hear-Is가 듣는 중...' : '터치하여 Hear-Is 시작하기!',
+              Text(isListening ? 'Hear-is가 듣는 중...' : '터치하여 Hear-is 시작하기!',
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

@@ -67,7 +67,7 @@ class TriangleSplitScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(height: 520),
                                   Text(
-                                    'Hear Is',
+                                    'Hear is',
                                     textAlign: TextAlign.right, // 텍스트 오른쪽 정렬
                                     style: TextStyle(
                                       fontSize: 44,
