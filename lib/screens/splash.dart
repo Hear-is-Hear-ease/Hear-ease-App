@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hear_ease_app/screens/home.dart';
 
 class HomeSplashScreen extends StatefulWidget {
@@ -14,198 +15,62 @@ class _HomeScreenState extends State<HomeSplashScreen> {
   @override
   void initState() {
     super.initState();
-    // _navigateToHome();
+    _navigateToHome();
   }
 
-  // _navigateToHome() async {
-  //   await Future.delayed(const Duration(seconds: 1), () {
-  //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-  //       builder: (context) => const HomeScreen(),
-  //     ));
-  //   });
-  // }
+  _navigateToHome() async {
+    await Future.delayed(const Duration(seconds: 1), () {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ));
+    });
+  }
 
   @override
-  // Widget build(BuildContext context) => const SplashLoadingScreen();
-  Widget build(BuildContext context) => const HomeScreen();
+  Widget build(BuildContext context) => const SplashLoadingScreen();
+  // Widget build(BuildContext context) => const HomeScreen();
 }
 
 class SplashLoadingScreen extends StatelessWidget {
   const SplashLoadingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => const TriangleSplitScreen();
-}
-
-class TriangleSplitScreen extends StatelessWidget {
-  const TriangleSplitScreen({super.key});
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Lower Triangle with Text
-          CustomPaint(
-            painter: TrianglePainter(isUpperTriangle: false),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: ClipPath(
-                clipper: TriangleClipper(isUpperTriangle: false),
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 520),
-                                  Text(
-                                    'Hear is',
-                                    textAlign: TextAlign.right, // 텍스트 오른쪽 정렬
-                                    style: TextStyle(
-                                      fontSize: 44,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Hear ease',
-                                    textAlign: TextAlign.right, // 텍스트 오른쪽 정렬
-                                    style: TextStyle(
-                                      fontSize: 44,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 20),
-                            ],
-                          ),
-                        ),
-                        const Column(
-                          children: [
-                            Text(
-                              '@데청캠 과기대 1조',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color.fromRGBO(0, 0, 0, 0.5),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        ),
-                      ],
-                    )),
-              ),
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromRGBO(255, 200, 71, 1),
+              Color.fromRGBO(251, 160, 35, 1),
+            ],
           ),
-
-          // Upper Triangle with Image
-          CustomPaint(
-            painter: TrianglePainter(isUpperTriangle: true),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: ClipPath(
-                clipper: TriangleClipper(isUpperTriangle: true),
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'assets/images/splash.jpg',
-                      fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 2 + 200,
-                    ),
-                    BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 0.8, sigmaY: 0.8),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        color: const Color.fromRGBO(0, 0, 0, 0.1),
-                      ),
-                    ),
-                  ],
+        ),
+        child: Center(
+          child: Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(235, 145, 25, 1),
+              borderRadius: BorderRadius.circular(16),
+              border:
+                  Border.all(color: Color.fromRGBO(251, 160, 35, 1), width: 5),
+            ),
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.all(3),
+                child: SvgPicture.asset(
+                  'assets/icons/baby-smile-white.svg',
+                  width: 74,
+                  height: 74,
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
-  }
-}
-
-class TrianglePainter extends CustomPainter {
-  final bool isUpperTriangle;
-
-  TrianglePainter({required this.isUpperTriangle});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = const Color.fromRGBO(255, 173, 42, 0.9)
-      ..style = PaintingStyle.fill;
-
-    final Path path = Path();
-    if (isUpperTriangle) {
-      path.moveTo(size.width, 0);
-      path.lineTo(size.width, size.height / 2);
-      path.lineTo(0, size.height / 2 + 200);
-      path.lineTo(0, 0);
-    } else {
-      path.moveTo(size.width, size.height / 2);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-      path.lineTo(0, size.height / 2 + 200);
-    }
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
-class TriangleClipper extends CustomClipper<Path> {
-  final bool isUpperTriangle;
-
-  TriangleClipper({required this.isUpperTriangle});
-
-  @override
-  Path getClip(Size size) {
-    final Path path = Path();
-    if (isUpperTriangle) {
-      path.moveTo(size.width, 0);
-      path.lineTo(size.width, size.height / 2);
-      path.lineTo(0, size.height / 2 + 200);
-      path.lineTo(0, 0);
-    } else {
-      path.moveTo(size.width, size.height / 2);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-      path.lineTo(0, size.height / 2 + 200);
-    }
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
   }
 }

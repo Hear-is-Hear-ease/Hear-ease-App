@@ -150,7 +150,7 @@ class _ListenWigetState extends State<ListenWiget>
       if (predictState != null) {
         setListenStateWithRef('done');
         _circleController.stop();
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 1, milliseconds: 400), () {
           widget.onBabyStateUpdate('hungry');
         });
         Future.delayed(const Duration(seconds: 2), () {
@@ -173,8 +173,8 @@ class _ListenWigetState extends State<ListenWiget>
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color.fromRGBO(255, 184, 71, 1),
-            Color.fromRGBO(251, 168, 35, 1),
+            Color.fromRGBO(239, 187, 65, 1),
+            Color.fromRGBO(251, 160, 35, 1),
           ],
         ),
       ),

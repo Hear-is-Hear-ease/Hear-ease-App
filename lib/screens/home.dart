@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       babyState = value;
       _controller.animateTo(0.9, // Go to the maximum size
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut);
     });
   }
