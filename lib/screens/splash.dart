@@ -34,10 +34,12 @@ class SplashLoadingScreen extends StatelessWidget {
   const SplashLoadingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => TriangleSplitScreen();
+  Widget build(BuildContext context) => const TriangleSplitScreen();
 }
 
 class TriangleSplitScreen extends StatelessWidget {
+  const TriangleSplitScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +154,7 @@ class TrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = Color.fromRGBO(255, 173, 42, 0.9)
+      ..color = const Color.fromRGBO(255, 173, 42, 0.9)
       ..style = PaintingStyle.fill;
 
     final Path path = Path();

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DetailWidget extends StatefulWidget {
-  const DetailWidget({super.key});
+  final String? babyState;
+  const DetailWidget({super.key, required this.babyState});
 
   @override
   State<DetailWidget> createState() => _DetailWidgetState();
@@ -9,11 +10,20 @@ class DetailWidget extends StatefulWidget {
 
 class _DetailWidgetState extends State<DetailWidget> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        '자세한 설명 위젯',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    double containerHeight = MediaQuery.of(context).size.height * 0.84;
+    return SizedBox(
+      height: containerHeight,
+      child: Center(
+        child: Text(
+          widget.babyState ?? 'Null',
+          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

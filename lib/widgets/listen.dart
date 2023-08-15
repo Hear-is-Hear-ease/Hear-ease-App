@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ListenWiget extends StatefulWidget {
-  const ListenWiget({super.key});
+  final Function(String) onBabyStateUpdate;
+  const ListenWiget({super.key, required this.onBabyStateUpdate});
 
   @override
   State<ListenWiget> createState() => _ListenWigetState();
@@ -55,12 +56,12 @@ class _ListenWigetState extends State<ListenWiget>
     );
 
     _bounceAnimation =
-        Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
+        Tween<double>(begin: 1.0, end: 1.0).animate(CurvedAnimation(
       parent: _bounceController,
       curve: Curves.fastLinearToSlowEaseIn,
     ));
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.1).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.05).animate(
         CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn))
       ..addListener(() {
         setState(() {});
@@ -149,6 +150,9 @@ class _ListenWigetState extends State<ListenWiget>
       if (predictState != null) {
         setListenStateWithRef('done');
         _circleController.stop();
+        Future.delayed(const Duration(seconds: 1), () {
+          widget.onBabyStateUpdate('hungry');
+        });
         Future.delayed(const Duration(seconds: 2), () {
           setListenStateWithRef('init');
         });
@@ -157,7 +161,6 @@ class _ListenWigetState extends State<ListenWiget>
   }
 
   void endListening() {
-    print('end listening');
     setListenStateWithRef('init');
     _circleController.stop();
   }
@@ -239,8 +242,8 @@ class CircleHollowPainter extends CustomPainter {
     final innerCircle = Offset(size.width / 2, size.height / 2);
     final outerCircle = Offset(size.width / 2, size.height / 2);
 
-    final innerRadius = 76.0;
-    final outerRadius = 88.0;
+    const innerRadius = 76.0;
+    const outerRadius = 88.0;
 
     final outerPath = Path()
       ..addOval(Rect.fromCircle(center: outerCircle, radius: outerRadius));
