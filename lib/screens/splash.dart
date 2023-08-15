@@ -14,19 +14,20 @@ class _HomeScreenState extends State<HomeSplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToHome();
+    // _navigateToHome();
   }
 
-  _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 1), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
-      ));
-    });
-  }
+  // _navigateToHome() async {
+  //   await Future.delayed(const Duration(seconds: 1), () {
+  //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //       builder: (context) => const HomeScreen(),
+  //     ));
+  //   });
+  // }
 
   @override
-  Widget build(BuildContext context) => const SplashLoadingScreen();
+  // Widget build(BuildContext context) => const SplashLoadingScreen();
+  Widget build(BuildContext context) => const HomeScreen();
 }
 
 class SplashLoadingScreen extends StatelessWidget {
