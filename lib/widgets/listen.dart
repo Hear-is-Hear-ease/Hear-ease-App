@@ -78,7 +78,6 @@ class _ListenWigetState extends State<ListenWiget>
     String fileState = 'smile';
     switch (inputListenState) {
       case 'init':
-      case 'done':
         return 'assets/icons/sound_wave-color.svg';
       case 'listening':
         break;
@@ -90,6 +89,8 @@ class _ListenWigetState extends State<ListenWiget>
         break;
       case 'analysing':
         return 'assets/icons/sound_analyzing-color.svg';
+      case 'done':
+        return 'assets/icons/check_circle-color.svg';
     }
     return 'assets/icons/baby-$fileState-white.svg';
   }
@@ -148,6 +149,9 @@ class _ListenWigetState extends State<ListenWiget>
       if (predictState != null) {
         setListenStateWithRef('done');
         _circleController.stop();
+        Future.delayed(const Duration(seconds: 2), () {
+          setListenStateWithRef('init');
+        });
       }
     });
   }
