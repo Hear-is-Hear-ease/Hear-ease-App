@@ -1,6 +1,8 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hear_ease_app/services/record.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ListenWiget extends StatefulWidget {
   final Function(String) onBabyStateUpdate;
@@ -32,9 +34,15 @@ class _ListenWigetState extends State<ListenWiget>
   late SvgPicture mainSvg;
   late String listenState;
 
+  late RecordService _record;
+  bool isListening = false;
+
   @override
   void initState() {
     super.initState();
+
+    _record = RecordService();
+    _checkHasPermission();
 
     listenState = 'init';
     mainSvg = SvgPicture.asset('assets/icons/sound_wave-color.svg');
@@ -73,6 +81,16 @@ class _ListenWigetState extends State<ListenWiget>
     _circleController.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _checkHasPermission() async {
+    if (await _record.checkHasPermission() == false) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("You must accept permissions"),
+        duration: Duration(seconds: 5),
+      ));
+    }
   }
 
   String getMainSvgPath(String inputListenState) {
@@ -118,6 +136,8 @@ class _ListenWigetState extends State<ListenWiget>
     _controller.forward().then((_) {
       setState(() {
         listenState = toListenState;
+        isListening = toListenState == 'listening';
+        if (isListening) _waitSound();
         mainSvg = SvgPicture.asset(getMainSvgPath(listenState));
       });
       _controller.reverse().then((_) {
@@ -126,6 +146,19 @@ class _ListenWigetState extends State<ListenWiget>
         });
       });
     });
+  }
+
+  void _waitSound() async {
+    var dir = (await getApplicationDocumentsDirectory()).path;
+    var filePath = '$dir/tempRecord.wav';
+    bool hasDetected = await _record.waitSound(filePath, () => isListening);
+    if (hasDetected) {
+      _sendToServer(filePath);
+    }
+  }
+
+  void _sendToServer(String filepath) {
+    print("Send to server with file $filepath");
   }
 
   void toggleListening() {
@@ -252,11 +285,13 @@ class CircleHollowPainter extends CustomPainter {
 
     const gradient = SweepGradient(
       colors: [
-        Color.fromRGBO(12, 3, 150, 1),
-        Color.fromRGBO(127, 2, 194, 1),
-        Color.fromRGBO(252, 0, 242, 1),
+        Color.fromRGBO(255, 219, 140, 0.851), // 더 밝은 주황색
+        Color.fromRGBO(255, 100, 100, 0.851), // 붉은색
+        Color.fromRGBO(255, 199, 110, 0.851), // 원래 배경색
+        Color.fromRGBO(255, 150, 200, 0.851), // 핑크색
+        Color.fromRGBO(235, 179, 90, 0.851), // 더 어두운 주황색
       ],
-      stops: [0.0, 0.5, 1.0],
+      stops: [0.0, 0.25, 0.5, 0.75, 1.0],
     );
 
     final paint = Paint()
