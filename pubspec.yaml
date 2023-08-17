@@ -39,7 +39,7 @@ dependencies:
   permission_handler: ^10.4.3
   another_audio_recorder: ^1.0.1
   path_provider: ^2.1.0
-  ffmpeg_kit_flutter: ^5.1.0
+  flutter_ffmpeg: ^0.4.2
 
 dev_dependencies:
   flutter_test:
