@@ -11,7 +11,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _controller = DraggableScrollableController();
-  bool isListening = false;
   String? babyState;
 
   void _updateBabyState(String value) {

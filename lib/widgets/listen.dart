@@ -137,7 +137,6 @@ class _ListenWigetState extends State<ListenWiget>
       setState(() {
         listenState = toListenState;
         isListening = toListenState == 'listening';
-        if (isListening) _waitSound();
         mainSvg = SvgPicture.asset(getMainSvgPath(listenState));
       });
       _controller.reverse().then((_) {
@@ -152,7 +151,9 @@ class _ListenWigetState extends State<ListenWiget>
     var dir = (await getApplicationDocumentsDirectory()).path;
     var filePath = '$dir/tempRecord.wav';
     bool hasDetected = await _record.waitSound(filePath, () => isListening);
-    if (hasDetected) {
+    if (hasDetected && listenState == 'listening') {
+      startAnalysing();
+      _circleController.repeat(); // start circling
       _sendToServer(filePath);
     }
   }
@@ -167,13 +168,15 @@ class _ListenWigetState extends State<ListenWiget>
 
   void startListening() {
     setListenStateWithRef('listening');
-    Future.delayed(const Duration(seconds: 4), () {
-      bool isBabySound = true;
-      if (isBabySound && listenState == 'listening') {
-        startAnalysing();
-        _circleController.repeat(); // start circling
-      }
-    });
+    _waitSound();
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   bool isBabySound = true;
+    // if (isBabySound && listenState == 'listening') {
+    //   startAnalysing();
+    //   _circleController.repeat(); // start circling
+    // }
+    // });
+    // bool hasDone = await _waitSound();
   }
 
   void startAnalysing() {
