@@ -1,11 +1,12 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hear_ease_app/models/baby_state.dart';
 import 'package:hear_ease_app/services/record.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ListenWiget extends StatefulWidget {
-  final Function(String) onBabyStateUpdate;
+  final Function(BabyState) onBabyStateUpdate;
   const ListenWiget({super.key, required this.onBabyStateUpdate});
 
   @override
@@ -74,6 +75,16 @@ class _ListenWigetState extends State<ListenWiget>
       ..addListener(() {
         setState(() {});
       });
+
+    // Detail 개발용 임시
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   listenState = 'done';
+    //   widget.onBabyStateUpdate(BabyState(state: 'hungry', predictMap: {
+    //     'hungry': 72.847,
+    //     'sleepy': 18.123,
+    //     'hug': 3.21,
+    //   }));
+    // });
   }
 
   @override
@@ -187,7 +198,12 @@ class _ListenWigetState extends State<ListenWiget>
         setListenStateWithRef('done');
         _circleController.stop();
         Future.delayed(const Duration(seconds: 1, milliseconds: 400), () {
-          widget.onBabyStateUpdate('hungry');
+          var state = BabyState(state: 'hungry', predictMap: {
+            'hungry': 72.847,
+            'sleepy': 18.123,
+            'hug': 3.21,
+          });
+          widget.onBabyStateUpdate(state);
         });
         Future.delayed(const Duration(seconds: 2), () {
           setListenStateWithRef('init');
@@ -213,6 +229,7 @@ class _ListenWigetState extends State<ListenWiget>
             Color.fromRGBO(251, 160, 35, 1),
           ],
         ),
+        // color: Color.fromRGBO(255, 239, 199, 0.97),
       ),
       width: double.infinity,
       height: double.infinity,
