@@ -3,6 +3,7 @@ import 'package:hear_ease_app/models/baby_state.dart';
 import 'package:hear_ease_app/widgets/detail.dart';
 import 'package:hear_ease_app/widgets/empty_detail.dart';
 import 'package:hear_ease_app/widgets/listen.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // for fullscreen
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+
     return Scaffold(
       body: Stack(
         children: [
