@@ -70,7 +70,6 @@ flutter:
     - assets/icons/
     - assets/models/
     - assets/models/lite-model_yamnet_tflite_1.tflite
-    - assets/background.jpg
     - assets/samples/
 
   # An image asset can refer to one or more resolution-specific "variants", see

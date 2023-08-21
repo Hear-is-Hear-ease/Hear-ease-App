@@ -77,15 +77,24 @@ class _ListenWigetState extends State<ListenWiget>
       });
 
     // Detail 개발용 임시
-    // Future.delayed(const Duration(milliseconds: 500), () {
-    //   listenState = 'done';
-    //   widget.onBabyStateUpdate(BabyState(state: 'hungry', predictMap: {
-    //     'hungry': 72.847,
-    //     'sleepy': 18.123,
-    //     'hug': 3.21,
-    //   }));
-    // });
+    Future.delayed(const Duration(milliseconds: 500), () {
+      listenState = 'done';
+      var state = BabyState(state: 'Awake', predictMap: {
+        'Awake': 0.72847,
+        'Hungry': 0.18123,
+        'hug': 0.05,
+      });
+      widget.onBabyStateUpdate(state);
+    });
   }
+
+// Diaper
+// Hungry
+// Awake
+// Hug
+// Sad
+// Sleepy
+// Uncomfortable
 
   @override
   void dispose() {
