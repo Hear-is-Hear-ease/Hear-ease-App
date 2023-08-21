@@ -75,26 +75,7 @@ class _ListenWigetState extends State<ListenWiget>
       ..addListener(() {
         setState(() {});
       });
-
-    // Detail 개발용 임시
-    Future.delayed(const Duration(milliseconds: 500), () {
-      listenState = 'done';
-      var state = BabyState(state: 'Awake', predictMap: {
-        'Awake': 0.72847,
-        'Hungry': 0.18123,
-        'hug': 0.05,
-      });
-      widget.onBabyStateUpdate(state);
-    });
   }
-
-// Diaper
-// Hungry
-// Awake
-// Hug
-// Sad
-// Sleepy
-// Uncomfortable
 
   @override
   void dispose() {

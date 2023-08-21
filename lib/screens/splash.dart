@@ -38,29 +38,30 @@ class SplashLoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromRGBO(255, 200, 71, 1),
-              Color.fromRGBO(251, 160, 35, 1),
-            ],
-          ),
-        ),
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topLeft,
+        //     end: Alignment.bottomRight,
+        //     colors: [
+        //       Color.fromRGBO(255, 200, 71, 1),
+        //       Color.fromRGBO(251, 160, 35, 1),
+        //     ],
+        //   ),
+        // ),
+        color: const Color.fromRGBO(255, 239, 199, 0.97),
         child: Center(
           child: Container(
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: Color.fromRGBO(235, 145, 25, 1),
+              color: const Color.fromRGBO(255, 200, 71, 1),
               borderRadius: BorderRadius.circular(16),
-              border:
-                  Border.all(color: Color.fromRGBO(251, 160, 35, 1), width: 5),
+              border: Border.all(
+                  color: const Color.fromRGBO(251, 160, 35, 1), width: 5),
             ),
             child: Center(
               child: Container(
-                padding: EdgeInsets.all(3),
+                padding: const EdgeInsets.all(3),
                 child: SvgPicture.asset(
                   'assets/icons/baby-smile-white.svg',
                   width: 74,
