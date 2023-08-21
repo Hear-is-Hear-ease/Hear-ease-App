@@ -199,9 +199,9 @@ class _ListenWigetState extends State<ListenWiget>
         _circleController.stop();
         Future.delayed(const Duration(seconds: 1, milliseconds: 400), () {
           var state = BabyState(state: 'hungry', predictMap: {
-            'hungry': 72.847,
-            'sleepy': 18.123,
-            'hug': 3.21,
+            'hungry': 0.72847,
+            'sleepy': 0.18123,
+            'hug': 0.05,
           });
           widget.onBabyStateUpdate(state);
         });
@@ -221,15 +221,15 @@ class _ListenWigetState extends State<ListenWiget>
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromRGBO(239, 187, 65, 1),
-            Color.fromRGBO(251, 160, 35, 1),
-          ],
-        ),
-        // color: Color.fromRGBO(255, 239, 199, 0.97),
+        // gradient: LinearGradient(
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        //   colors: [
+        //     Color.fromRGBO(239, 187, 65, 1),
+        //     Color.fromRGBO(251, 160, 35, 1),
+        //   ],
+        // ),
+        color: Color.fromRGBO(255, 239, 199, 0.97),
       ),
       width: double.infinity,
       height: double.infinity,
@@ -239,7 +239,8 @@ class _ListenWigetState extends State<ListenWiget>
         children: [
           Text(getTitle(listenState),
               style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
+                  // color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w600)),
           const SizedBox(
@@ -251,12 +252,15 @@ class _ListenWigetState extends State<ListenWiget>
               AvatarGlow(
                 animate: ['listening', 'crying'].contains(listenState),
                 endRadius: 160.0,
+                glowColor: Colors.red.shade400,
                 duration: const Duration(milliseconds: 2000),
                 curve: Curves.easeInOut,
                 child: GestureDetector(
                   onTap: toggleListening,
                   child: Material(
-                    shape: const CircleBorder(),
+                    shape: CircleBorder(
+                        // side: BorderSide(color: Colors.red.shade400),
+                        ),
                     elevation: 8,
                     child: Container(
                       padding: const EdgeInsets.all(15),

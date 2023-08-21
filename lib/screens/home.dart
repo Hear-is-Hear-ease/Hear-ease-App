@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
 import 'package:hear_ease_app/widgets/detail.dart';
+import 'package:hear_ease_app/widgets/empty_detail.dart';
 import 'package:hear_ease_app/widgets/listen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           DraggableScrollableSheet(
             controller: _controller,
-            minChildSize: 0.1,
-            initialChildSize: 0.1,
+            minChildSize: 0.08,
+            initialChildSize: 0.08,
             maxChildSize: 0.9,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
@@ -105,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         children: [
                           const SizedBox(height: 20),
-                          DetailWidget(babyState: babyState),
+                          babyState == null
+                              ? const EmptyDetail()
+                              : DetailWidget(babyState: babyState!),
                         ],
                       ),
                     ],
