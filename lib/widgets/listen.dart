@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
+import 'package:hear_ease_app/services/notification.dart';
 import 'package:hear_ease_app/services/record.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -26,7 +27,6 @@ class _ListenWigetState extends State<ListenWiget>
   * analysing: crying 상태일 때 아이 음성을 통해 상태를 분석하는 단계
   * done: 분석이 완료된 상태로 7가지 상태 중 하나로 분석이 완료된 상황.
    */
-
   late AnimationController _circleController;
   late AnimationController _controller;
   late AnimationController _bounceController;
@@ -36,12 +36,14 @@ class _ListenWigetState extends State<ListenWiget>
   late String listenState;
 
   late RecordService _record;
+  late NotificationService _noti;
   bool isListening = false;
 
   @override
   void initState() {
     super.initState();
 
+    _noti = NotificationService();
     _record = RecordService();
     _checkHasPermission();
 
@@ -153,6 +155,7 @@ class _ListenWigetState extends State<ListenWiget>
     var filePath = '$dir/tempRecord.wav';
     bool hasDetected = await _record.waitSound(filePath, () => isListening);
     if (hasDetected && listenState == 'listening') {
+      _noti.showNotification('Hear-is', '아이가 울고 있어요! 원인을 분석중입니다...');
       startAnalysing();
       _circleController.repeat(); // start circling
       _sendToServer(filePath);
@@ -168,6 +171,7 @@ class _ListenWigetState extends State<ListenWiget>
   }
 
   void startListening() {
+    debugPrint("Start listening");
     setListenStateWithRef('listening');
     _waitSound();
     // Future.delayed(const Duration(seconds: 4), () {
@@ -183,18 +187,21 @@ class _ListenWigetState extends State<ListenWiget>
   void startAnalysing() {
     setListenStateWithRef('analysing');
     Future.delayed(const Duration(seconds: 4), () {
-      String? predictState = 'sleepy';
+      var predictState = BabyState(state: 'hungry', predictMap: {
+        'hungry': 0.72847,
+        'sleepy': 0.18123,
+        'hug': 0.05,
+      });
       if (predictState != null) {
         setListenStateWithRef('done');
         _circleController.stop();
-        Future.delayed(const Duration(seconds: 1, milliseconds: 400), () {
-          var state = BabyState(state: 'hungry', predictMap: {
-            'hungry': 0.72847,
-            'sleepy': 0.18123,
-            'hug': 0.05,
-          });
-          widget.onBabyStateUpdate(state);
+
+        // 바로 하단바가 올라오면 Done 화면을 볼 수 없으니 딜레이를 준다.
+        Future.delayed(const Duration(seconds: 1), () {
+          widget.onBabyStateUpdate(predictState);
         });
+
+        // 화면이 올라온 뒤에 메인 화면으로 바뀔 수 있게끔 딜레이를 준다.
         Future.delayed(const Duration(seconds: 2), () {
           setListenStateWithRef('init');
         });

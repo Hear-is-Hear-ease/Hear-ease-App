@@ -40,7 +40,7 @@ class RecordService {
 
         // 파일이 존재할 경우 삭제한다.
         if (file.existsSync()) {
-          print("delete file");
+          debugPrint("delete file");
           file.deleteSync();
         }
 
@@ -48,13 +48,13 @@ class RecordService {
             audioFormat: AudioFormat.WAV, sampleRate: 16000);
 
         // 녹음을 시작한다.
-        print("create file");
+        debugPrint("start record");
         await recorder.initialized;
         await recorder.start();
 
         // 60틱(3초)동안 녹음을 수행하며 평균 파워를 측정한다.
         for (var j = 0; j < tick; j++) {
-          // print('sleep count $j');
+          // debugPrint('sleep count $j');
           sleep(const Duration(milliseconds: 50));
           sumAvgPower +=
               (await recorder.current(channel: 0))?.metering?.averagePower ??
@@ -65,8 +65,8 @@ class RecordService {
         var result = await recorder.stop();
 
         // 파워가 임계치 이상일 경우에만 울음소리 분석을 수행한다.
-        print('stop file: ${result?.duration}');
-        print('avg: ${sumAvgPower / tick}');
+        debugPrint(
+            'stop record: ${result?.duration}  |  avg: ${sumAvgPower / tick}');
 
         Future.delayed(const Duration(seconds: 5), () {
           getOut = true;

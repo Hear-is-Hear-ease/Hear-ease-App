@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 class OsUtils {
   static Future<bool> copyFile(String filePath, String newFilePath) async {
     try {
@@ -7,7 +9,7 @@ class OsUtils {
       file.copySync(newFilePath);
       return true;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -22,7 +24,7 @@ class OsUtils {
       throw Exception(
           'Can not delete file: file not found with path $filePath');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
   }
