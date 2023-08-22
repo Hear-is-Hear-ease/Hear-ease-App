@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
+import 'package:hear_ease_app/services/api.dart';
 import 'package:hear_ease_app/services/notification.dart';
 import 'package:hear_ease_app/services/record.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,6 +38,7 @@ class _ListenWigetState extends State<ListenWiget>
 
   late RecordService _record;
   late NotificationService _noti;
+  late ApiService _apiService;
   bool isListening = false;
 
   @override
@@ -45,6 +47,7 @@ class _ListenWigetState extends State<ListenWiget>
 
     _noti = NotificationService();
     _record = RecordService();
+    _apiService = ApiService();
     _checkHasPermission();
 
     listenState = 'init';
@@ -158,12 +161,16 @@ class _ListenWigetState extends State<ListenWiget>
       _noti.showNotification('Hear-is', '아이가 울고 있어요! 원인을 분석중입니다...');
       startAnalysing();
       _circleController.repeat(); // start circling
-      _sendToServer(filePath);
     }
   }
 
-  void _sendToServer(String filepath) {
-    print("Send to server with file $filepath");
+  Future<BabyState> _sendToServer(String filepath) async {
+    var dir = (await getApplicationDocumentsDirectory()).path;
+    var testFilePath = '$dir/hungry_8.wav';
+    print("Send to server with file $testFilePath");
+    var babyState = await _apiService.getPrediction(filePath: testFilePath);
+    print(babyState.getPredictMap(limit: 2));
+    return babyState;
   }
 
   void toggleListening() {
@@ -174,38 +181,27 @@ class _ListenWigetState extends State<ListenWiget>
     debugPrint("Start listening");
     setListenStateWithRef('listening');
     _waitSound();
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   bool isBabySound = true;
-    // if (isBabySound && listenState == 'listening') {
-    //   startAnalysing();
-    //   _circleController.repeat(); // start circling
-    // }
-    // });
-    // bool hasDone = await _waitSound();
   }
 
-  void startAnalysing() {
+  void startAnalysing() async {
     setListenStateWithRef('analysing');
-    Future.delayed(const Duration(seconds: 4), () {
-      var predictState = BabyState(state: 'hungry', predictMap: {
-        'hungry': 0.72847,
-        'sleepy': 0.18123,
-        'hug': 0.05,
+    try {
+      var predictState = await _sendToServer('some file path');
+      setListenStateWithRef('done');
+      _circleController.stop();
+
+      // 바로 하단바가 올라오면 Done 화면을 볼 수 없으니 딜레이를 준다.
+      Future.delayed(const Duration(seconds: 1), () {
+        widget.onBabyStateUpdate(predictState);
       });
-      if (predictState != null) {
-        setListenStateWithRef('done');
-        _circleController.stop();
+    } catch (e) {
+      debugPrintStack();
+    }
 
-        // 바로 하단바가 올라오면 Done 화면을 볼 수 없으니 딜레이를 준다.
-        Future.delayed(const Duration(seconds: 1), () {
-          widget.onBabyStateUpdate(predictState);
-        });
-
-        // 화면이 올라온 뒤에 메인 화면으로 바뀔 수 있게끔 딜레이를 준다.
-        Future.delayed(const Duration(seconds: 2), () {
-          setListenStateWithRef('init');
-        });
-      }
+    // 화면이 올라온 뒤에 메인 화면으로 바뀔 수 있게끔 딜레이를 준다.
+    // 값을 가져오는데 실패 하였을 때도 메인 화면으로 간다.
+    Future.delayed(const Duration(seconds: 2), () {
+      setListenStateWithRef('init');
     });
   }
 
@@ -306,11 +302,11 @@ class CircleHollowPainter extends CustomPainter {
 
     const gradient = SweepGradient(
       colors: [
-        Color.fromRGBO(255, 219, 140, 0.851), // 더 밝은 주황색
-        Color.fromRGBO(255, 100, 100, 0.851), // 붉은색
-        Color.fromRGBO(255, 199, 110, 0.851), // 원래 배경색
-        Color.fromRGBO(255, 150, 200, 0.851), // 핑크색
-        Color.fromRGBO(235, 179, 90, 0.851), // 더 어두운 주황색
+        Color.fromRGBO(255, 219, 140, 0.851),
+        Color.fromRGBO(255, 100, 100, 0.851),
+        Color.fromRGBO(255, 199, 110, 0.851),
+        Color.fromRGBO(255, 150, 200, 0.851),
+        Color.fromRGBO(235, 179, 90, 0.851),
       ],
       stops: [0.0, 0.25, 0.5, 0.75, 1.0],
     );
