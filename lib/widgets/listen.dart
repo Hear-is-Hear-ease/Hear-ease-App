@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
 import 'package:hear_ease_app/services/api.dart';
 import 'package:hear_ease_app/services/notification.dart';
+import 'package:hear_ease_app/services/record_old.dart';
 import 'package:hear_ease_app/services/record.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -36,6 +37,7 @@ class _ListenWigetState extends State<ListenWiget>
   late SvgPicture mainSvg;
   late String listenState;
 
+  // late RecordService _record;
   late RecordService _record;
   late NotificationService _noti;
   late ApiService _apiService;
@@ -46,9 +48,10 @@ class _ListenWigetState extends State<ListenWiget>
     super.initState();
 
     _noti = NotificationService();
+    // _record = RecordService();
     _record = RecordService();
     _apiService = ApiService();
-    _checkHasPermission();
+    // _checkHasPermission();
 
     listenState = 'init';
     mainSvg = SvgPicture.asset('assets/icons/sound_wave-color.svg');
@@ -89,15 +92,15 @@ class _ListenWigetState extends State<ListenWiget>
     super.dispose();
   }
 
-  void _checkHasPermission() async {
-    if (await _record.checkHasPermission() == false) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("You must accept permissions"),
-        duration: Duration(seconds: 5),
-      ));
-    }
-  }
+  // void _checkHasPermission() async {
+  //   if (await _record.checkHasPermission() == false) {
+  //     if (!mounted) return;
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //       content: Text("You must accept permissions"),
+  //       duration: Duration(seconds: 5),
+  //     ));
+  //   }
+  // }
 
   String getMainSvgPath(String inputListenState) {
     String fileState = 'smile';
@@ -156,19 +159,20 @@ class _ListenWigetState extends State<ListenWiget>
   void _waitSound() async {
     var dir = (await getApplicationDocumentsDirectory()).path;
     var filePath = '$dir/tempRecord.wav';
+    // bool hasDetected = await _record.waitSound3(filePath, () => isListening);
     bool hasDetected = await _record.waitSound(filePath, () => isListening);
     if (hasDetected && listenState == 'listening') {
       _noti.showNotification('Hear-is', '아이가 울고 있어요! 원인을 분석중입니다...');
-      startAnalysing();
+      startAnalysing(filePath);
       _circleController.repeat(); // start circling
     }
   }
 
   Future<BabyState> _sendToServer(String filepath) async {
-    var dir = (await getApplicationDocumentsDirectory()).path;
-    var testFilePath = '$dir/hungry_8.wav';
-    print("Send to server with file $testFilePath");
-    var babyState = await _apiService.getPrediction(filePath: testFilePath);
+    // var dir = (await getApplicationDocumentsDirectory()).path;
+    // var testFilePath = '$dir/hungry_8.wav';
+    print("Send to server with file $filepath");
+    var babyState = await _apiService.getPrediction(filePath: filepath);
     print(babyState.getPredictMap(limit: 2));
     return babyState;
   }
@@ -183,10 +187,13 @@ class _ListenWigetState extends State<ListenWiget>
     _waitSound();
   }
 
-  void startAnalysing() async {
+  void startAnalysing(String filePath) async {
+    print("Start Analysing");
     setListenStateWithRef('analysing');
+    await Future.delayed(const Duration(seconds: 2));
+    print("end sleep Analysing");
     try {
-      var predictState = await _sendToServer('some file path');
+      var predictState = await _sendToServer(filePath);
       setListenStateWithRef('done');
       _circleController.stop();
 
@@ -251,7 +258,7 @@ class _ListenWigetState extends State<ListenWiget>
                 child: GestureDetector(
                   onTap: toggleListening,
                   child: Material(
-                    shape: CircleBorder(
+                    shape: const CircleBorder(
                         // side: BorderSide(color: Colors.red.shade400),
                         ),
                     elevation: 8,
