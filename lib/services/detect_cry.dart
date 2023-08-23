@@ -7,7 +7,8 @@ class DetectCryService {
   late String modelPath = '';
   late String csvPath = '';
   late tfl.Interpreter interpreter;
-  static const List<String> babyClasses = ['Crying', 'Baby cry', 'Babbling'];
+  // static const List<String> babyClasses = ['Crying', 'Baby cry', 'Babbling'];
+  static const List<String> babyClasses = ['Crying', 'Baby cry'];
 
   DetectCryService({required this.modelPath, required this.csvPath});
 

@@ -31,7 +31,7 @@ class _DetailWidgetState extends State<DetailWidget> {
           const SizedBox(height: 18),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
-            width: width * 0.82,
+            width: width * 0.9,
             height: 159,
             decoration: const BoxDecoration(
               color: Color.fromRGBO(255, 255, 255, 0.54),
@@ -44,20 +44,20 @@ class _DetailWidgetState extends State<DetailWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 5),
+                      margin: const EdgeInsets.only(bottom: 8, top: 10),
                       padding: const EdgeInsets.all(5.0),
                       decoration: const BoxDecoration(
                         color: Color.fromRGBO(210, 243, 251, 0.54),
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
-                      width: 110,
-                      height: 104,
+                      width: 100,
+                      height: 94,
                       child: info.renderImage(),
                     ),
                     Text(info.raw.iconTitle,
                         style: const TextStyle(
                           color: Color.fromRGBO(57, 141, 147, 1),
-                          fontSize: 15,
+                          fontSize: 14,
                         )),
                   ],
                 ),

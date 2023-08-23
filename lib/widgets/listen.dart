@@ -190,7 +190,7 @@ class _ListenWigetState extends State<ListenWiget>
   void startAnalysing(String filePath) async {
     print("Start Analysing");
     setListenStateWithRef('analysing');
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     print("end sleep Analysing");
     try {
       var predictState = await _sendToServer(filePath);
