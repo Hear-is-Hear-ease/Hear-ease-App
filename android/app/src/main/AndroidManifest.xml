@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Get location permission -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" /> 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -22,6 +23,7 @@
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
+            <!-- <service android:name="changjoopark.com.flutter_foreground_plugin.FlutterForegroundService"/> -->
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
@@ -36,5 +38,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- <uses-sdk
+            android:minSdkVersion="23"
+            tools:overrideLibrary="changjoopark.com.flutter_foreground_plugin" /> -->
     </application>
 </manifest>

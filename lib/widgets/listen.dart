@@ -4,9 +4,30 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
 import 'package:hear_ease_app/services/api.dart';
 import 'package:hear_ease_app/services/notification.dart';
-import 'package:hear_ease_app/services/record_old.dart';
+import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:hear_ease_app/services/record.dart';
 import 'package:path_provider/path_provider.dart';
+
+void startForegroundService() async {
+  await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 5);
+  await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
+  await FlutterForegroundPlugin.startForegroundService(
+    holdWakeLock: false,
+    onStarted: () {
+      print("Foreground on Started");
+    },
+    onStopped: () {
+      print("Foreground on Stopped");
+    },
+    title: "Flutter Foreground Service",
+    content: "This is Content",
+    iconName: "ic_stat_hot_tub",
+  );
+}
+
+void globalForegroundService() {
+  debugPrint("current datetime is ${DateTime.now()}");
+}
 
 class ListenWiget extends StatefulWidget {
   final Function(BabyState) onBabyStateUpdate;
@@ -45,6 +66,7 @@ class _ListenWigetState extends State<ListenWiget>
 
   @override
   void initState() {
+    startForegroundService();
     super.initState();
 
     _noti = NotificationService();
@@ -128,7 +150,7 @@ class _ListenWigetState extends State<ListenWiget>
       case 'init':
         return '터치하여 Hear-is 시작하기!';
       case 'listening':
-        return '아이의 울음소리에 귀를 기울이고 있어요';
+        return '아이의 소리에 귀를 기울이고 있어요';
       case 'silence':
         return '아기가 자고 있어요';
       case 'crying':
@@ -159,6 +181,7 @@ class _ListenWigetState extends State<ListenWiget>
   void _waitSound() async {
     var dir = (await getApplicationDocumentsDirectory()).path;
     var filePath = '$dir/tempRecord.wav';
+    startForegroundService();
     // bool hasDetected = await _record.waitSound3(filePath, () => isListening);
     bool hasDetected = await _record.waitSound(filePath, () => isListening);
     if (hasDetected && listenState == 'listening') {
@@ -166,6 +189,7 @@ class _ListenWigetState extends State<ListenWiget>
       startAnalysing(filePath);
       _circleController.repeat(); // start circling
     }
+    await FlutterForegroundPlugin.stopForegroundService();
   }
 
   Future<BabyState> _sendToServer(String filepath) async {

@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           DraggableScrollableSheet(
             controller: _controller,
-            minChildSize: 0.08,
-            initialChildSize: 0.08,
+            minChildSize: 0.1,
+            initialChildSize: 0.1,
             maxChildSize: 0.9,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
