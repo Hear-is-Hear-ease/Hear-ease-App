@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hear_ease_app/screens/home.dart';
@@ -28,7 +26,6 @@ class _HomeScreenState extends State<HomeSplashScreen> {
 
   @override
   Widget build(BuildContext context) => const SplashLoadingScreen();
-  // Widget build(BuildContext context) => const HomeScreen();
 }
 
 class SplashLoadingScreen extends StatelessWidget {
@@ -38,16 +35,6 @@ class SplashLoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     begin: Alignment.topLeft,
-        //     end: Alignment.bottomRight,
-        //     colors: [
-        //       Color.fromRGBO(255, 200, 71, 1),
-        //       Color.fromRGBO(251, 160, 35, 1),
-        //     ],
-        //   ),
-        // ),
         color: const Color.fromRGBO(255, 239, 199, 0.97),
         child: Center(
           child: Container(

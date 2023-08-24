@@ -52,6 +52,7 @@ dependencies:
     git:
       url: https://github.com/jja08111/flutter_foreground_service_plugin.git
       ref: 8a09c7b0aeb9d31204147fe6ee126c8a52471e3a
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+flutter_launcher_icons:
+  android: 'launcher_icon'
+  ios: false
+  image_path: 'assets/logo/logo2.png'
+  min_sdk_android: 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -82,6 +89,7 @@ flutter:
     - assets/models/
     - assets/models/lite-model_yamnet_tflite_1.tflite
     - assets/samples/
+    - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

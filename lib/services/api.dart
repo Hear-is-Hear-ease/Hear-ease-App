@@ -20,10 +20,7 @@ class ApiService {
     }
 
     try {
-      var apiBase = api[0] == '/' ? api.substring(1) : api;
-      // var uri = Uri.parse('$baseroot/$apiBase');
       var uri = Uri.parse(baseroot);
-      // print("Api request: ${'$baseroot/$apiBase'}");
 
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('file', filePath));

@@ -9,19 +9,15 @@ import 'package:hear_ease_app/services/record.dart';
 import 'package:path_provider/path_provider.dart';
 
 void startForegroundService() async {
-  await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 5);
+  await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 59);
   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
   await FlutterForegroundPlugin.startForegroundService(
     holdWakeLock: false,
-    onStarted: () {
-      print("Foreground on Started");
-    },
-    onStopped: () {
-      print("Foreground on Stopped");
-    },
+    onStarted: () {},
+    onStopped: () {},
     title: "Flutter Foreground Service",
-    content: "This is Content",
-    iconName: "ic_stat_hot_tub",
+    content: "foreground Service content",
+    iconName: "icon",
   );
 }
 
@@ -50,6 +46,7 @@ class _ListenWigetState extends State<ListenWiget>
   * analysing: crying 상태일 때 아이 음성을 통해 상태를 분석하는 단계
   * done: 분석이 완료된 상태로 7가지 상태 중 하나로 분석이 완료된 상황.
    */
+
   late AnimationController _circleController;
   late AnimationController _controller;
   late AnimationController _bounceController;
@@ -58,7 +55,6 @@ class _ListenWigetState extends State<ListenWiget>
   late SvgPicture mainSvg;
   late String listenState;
 
-  // late RecordService _record;
   late RecordService _record;
   late NotificationService _noti;
   late ApiService _apiService;
@@ -70,10 +66,8 @@ class _ListenWigetState extends State<ListenWiget>
     super.initState();
 
     _noti = NotificationService();
-    // _record = RecordService();
     _record = RecordService();
     _apiService = ApiService();
-    // _checkHasPermission();
 
     listenState = 'init';
     mainSvg = SvgPicture.asset('assets/icons/sound_wave-color.svg');
@@ -113,16 +107,6 @@ class _ListenWigetState extends State<ListenWiget>
     _controller.dispose();
     super.dispose();
   }
-
-  // void _checkHasPermission() async {
-  //   if (await _record.checkHasPermission() == false) {
-  //     if (!mounted) return;
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //       content: Text("You must accept permissions"),
-  //       duration: Duration(seconds: 5),
-  //     ));
-  //   }
-  // }
 
   String getMainSvgPath(String inputListenState) {
     String fileState = 'smile';
@@ -181,23 +165,23 @@ class _ListenWigetState extends State<ListenWiget>
   void _waitSound() async {
     var dir = (await getApplicationDocumentsDirectory()).path;
     var filePath = '$dir/tempRecord.wav';
+
     startForegroundService();
-    // bool hasDetected = await _record.waitSound3(filePath, () => isListening);
     bool hasDetected = await _record.waitSound(filePath, () => isListening);
+
     if (hasDetected && listenState == 'listening') {
       _noti.showNotification('Hear-is', '아이가 울고 있어요! 원인을 분석중입니다...');
       startAnalysing(filePath);
-      _circleController.repeat(); // start circling
+      _circleController.repeat();
     }
+
     await FlutterForegroundPlugin.stopForegroundService();
   }
 
   Future<BabyState> _sendToServer(String filepath) async {
-    // var dir = (await getApplicationDocumentsDirectory()).path;
-    // var testFilePath = '$dir/hungry_8.wav';
-    print("Send to server with file $filepath");
+    debugPrint("Send to server with file $filepath");
     var babyState = await _apiService.getPrediction(filePath: filepath);
-    print(babyState.getPredictMap(limit: 2));
+    debugPrint(babyState.getPredictMap(limit: 2).toString());
     return babyState;
   }
 
@@ -212,10 +196,9 @@ class _ListenWigetState extends State<ListenWiget>
   }
 
   void startAnalysing(String filePath) async {
-    print("Start Analysing");
+    debugPrint("Start Analysing");
     setListenStateWithRef('analysing');
     await Future.delayed(const Duration(seconds: 1));
-    print("end sleep Analysing");
     try {
       var predictState = await _sendToServer(filePath);
       setListenStateWithRef('done');
@@ -245,14 +228,6 @@ class _ListenWigetState extends State<ListenWiget>
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        // gradient: LinearGradient(
-        //   begin: Alignment.topCenter,
-        //   end: Alignment.bottomCenter,
-        //   colors: [
-        //     Color.fromRGBO(239, 187, 65, 1),
-        //     Color.fromRGBO(251, 160, 35, 1),
-        //   ],
-        // ),
         color: Color.fromRGBO(255, 239, 199, 0.97),
       ),
       width: double.infinity,
@@ -282,9 +257,7 @@ class _ListenWigetState extends State<ListenWiget>
                 child: GestureDetector(
                   onTap: toggleListening,
                   child: Material(
-                    shape: const CircleBorder(
-                        // side: BorderSide(color: Colors.red.shade400),
-                        ),
+                    shape: const CircleBorder(),
                     elevation: 8,
                     child: Container(
                       padding: const EdgeInsets.all(15),

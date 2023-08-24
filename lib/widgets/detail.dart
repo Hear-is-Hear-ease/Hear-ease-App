@@ -20,10 +20,8 @@ class _DetailWidgetState extends State<DetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.85;
     double width = MediaQuery.of(context).size.width;
     return SizedBox(
-      // height: height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +69,7 @@ class _DetailWidgetState extends State<DetailWidget> {
                 fontSize: 30,
               )),
           const SizedBox(height: 22),
-          info.renderPredictionInfo(width),
+          info.renderPredictionInfo(width, info.babyState.state),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16),

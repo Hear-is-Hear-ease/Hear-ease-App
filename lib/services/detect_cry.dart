@@ -7,7 +7,6 @@ class DetectCryService {
   late String modelPath = '';
   late String csvPath = '';
   late tfl.Interpreter interpreter;
-  // static const List<String> babyClasses = ['Crying', 'Baby cry', 'Babbling'];
   static const List<String> babyClasses = ['Crying', 'Baby cry'];
 
   DetectCryService({required this.modelPath, required this.csvPath});
@@ -19,8 +18,6 @@ class DetectCryService {
   Future<bool> isBabyCry(String filePath) async {
     var input = await readWav(filePath);
     var output = List.filled(1, List.filled(521, 0.0));
-
-    // final interpreter = await tfl.Interpreter.fromAsset(modelPath);
 
     // inference
     interpreter.run(input, output);

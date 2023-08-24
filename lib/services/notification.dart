@@ -7,7 +7,7 @@ class NotificationService {
   late AndroidNotificationDetails androidPlatformChannelSpecifics;
   late NotificationDetails platformChannelSpecifics;
 
-  NotificationService({String notiIcon = '@mipmap/ic_launcher'}) {
+  NotificationService({String notiIcon = '@mipmap/launcher_icon'}) {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     // 화면에 보이는 아이콘 설정.
     initializationSettingsAndroid = AndroidInitializationSettings(notiIcon);

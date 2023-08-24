@@ -150,79 +150,7 @@ class DetailInfoRender {
     return Image.asset(_info.iconPath);
   }
 
-  // Column renderPredictionInfo(double width) {
-  //   List<String> keys = babyState.predictMap.keys.toList();
-  //   return Column(
-  //     children: [
-  //       SizedBox(
-  //         width: width * 0.82,
-  //         child:
-  //             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //           Text(keys[0],
-  //               style: const TextStyle(
-  //                 fontSize: 17,
-  //               )),
-  //           renderPredictBar(
-  //               width: width * 0.5, percent: babyState.predictMap[keys[0]]!),
-  //         ]),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       SizedBox(
-  //         width: width * 0.82,
-  //         child:
-  //             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //           Text(keys[1],
-  //               style: const TextStyle(
-  //                 fontSize: 17,
-  //               )),
-  //           renderPredictBar(
-  //               width: width * 0.5,
-  //               percent: babyState.predictMap[keys[1]]!,
-  //               color: const Color.fromRGBO(255, 239, 199, 1)),
-  //         ]),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Row renderPredictBar({
-  //   required double width,
-  //   required double percent,
-  //   Color color = const Color.fromRGBO(222, 252, 185, 1),
-  // }) {
-  //   if (percent > 1) {
-  //     throw "percent in renderPredictBar must be less than 1";
-  //   }
-  //   return Row(
-  //     children: [
-  //       Container(
-  //         height: 18,
-  //         width: width * percent,
-  //         decoration: BoxDecoration(
-  //           color: color,
-  //           borderRadius: const BorderRadius.only(
-  //             topLeft: Radius.circular(3.0),
-  //             bottomLeft: Radius.circular(3.0),
-  //           ),
-  //         ),
-  //       ),
-  //       Container(
-  //         height: 18,
-  //         width: width * percent,
-  //         decoration: const BoxDecoration(
-  //           color: Color.fromRGBO(217, 217, 217, 0.5),
-  //           borderRadius: BorderRadius.only(
-  //             topRight: Radius.circular(3.0),
-  //             bottomRight: Radius.circular(3.0),
-  //           ),
-  //         ),
-  //       ),
-  // //       Text('${(percent * 100).round()}%'),
-  //     ],
-  //   );
-  // }
-
-  SizedBox renderPredictionInfo(double width) {
+  SizedBox renderPredictionInfo(double width, String state) {
     List<String> keys = babyState.predictMap.keys.toList();
     double p1 = babyState.predictMap[keys[0]]!;
     double p2 = babyState.predictMap[keys[1]]!;
@@ -255,7 +183,9 @@ class DetailInfoRender {
                   const SizedBox(width: 7),
                   Container(
                     height: 15,
-                    width: width * 0.5 * p1,
+                    width: width *
+                        (state.toLowerCase() == 'uncomfortable' ? 0.32 : 0.5) *
+                        p1,
                     decoration: const BoxDecoration(
                       color: Color.fromRGBO(222, 252, 185, 1),
                       borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -264,7 +194,6 @@ class DetailInfoRender {
                   Expanded(
                     child: Container(
                       height: 15,
-                      // width: width * 0.5 * (1 - p1),
                       decoration: const BoxDecoration(
                         color: Color.fromRGBO(217, 217, 217, 0.5),
                         borderRadius: BorderRadius.only(
@@ -283,7 +212,9 @@ class DetailInfoRender {
                   const SizedBox(width: 7),
                   Container(
                     height: 15,
-                    width: width * 0.5 * p2,
+                    width: width *
+                        (state.toLowerCase() == 'uncomfortable' ? 0.32 : 0.5) *
+                        p2,
                     decoration: const BoxDecoration(
                       color: Color.fromRGBO(255, 239, 199, 1),
                       borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -292,7 +223,6 @@ class DetailInfoRender {
                   Expanded(
                     child: Container(
                       height: 15,
-                      // width: width * 0.5 * (1 - p1),
                       decoration: const BoxDecoration(
                         color: Color.fromRGBO(217, 217, 217, 0.5),
                         borderRadius: BorderRadius.only(
@@ -309,37 +239,6 @@ class DetailInfoRender {
         ],
       ),
     );
-    // return Column(
-    //   children: [
-    //     SizedBox(
-    //       width: width * 0.82,
-    //       child:
-    //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    //         Text(keys[0],
-    //             style: const TextStyle(
-    //               fontSize: 17,
-    //             )),
-    //         renderPredictBar(
-    //             width: width * 0.5, percent: babyState.predictMap[keys[0]]!),
-    //       ]),
-    //     ),
-    //     const SizedBox(height: 10),
-    //     SizedBox(
-    //       width: width * 0.82,
-    //       child:
-    //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    //         Text(keys[1],
-    //             style: const TextStyle(
-    //               fontSize: 17,
-    //             )),
-    //         renderPredictBar(
-    //             width: width * 0.5,
-    //             percent: babyState.predictMap[keys[1]]!,
-    //             color: const Color.fromRGBO(255, 239, 199, 1)),
-    //       ]),
-    //     ),
-    //   ],
-    // );
   }
 
   Row renderPredictBar({
