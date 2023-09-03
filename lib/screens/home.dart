@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
+import 'package:hear_ease_app/models/language.dart';
 import 'package:hear_ease_app/widgets/detail.dart';
-import 'package:hear_ease_app/widgets/empty_detail.dart';
+import 'package:hear_ease_app/widgets/select_lang_widget.dart';
 import 'package:hear_ease_app/widgets/listen.dart';
 import 'package:flutter/services.dart';
 
@@ -15,13 +16,40 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _controller = DraggableScrollableController();
   BabyState? babyState;
+  final LanguageService _lang = LanguageService();
+
+  @override
+  void initState() {
+    super.initState();
+    showSelectLang();
+  }
 
   void _updateBabyState(BabyState value) {
     setState(() {
       babyState = value;
-      _controller.animateTo(0.9, // Go to the maximum size
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut);
+      _controller.animateTo(0.9,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    });
+  }
+
+  void showSelectLang() async {
+    var userLang = await _lang.getLanguage();
+    if (userLang == null) {
+      setState(() {
+        _controller.animateTo(0.9,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
+      });
+    }
+  }
+
+  void closeBottomWidget() {
+    Future.delayed(const Duration(milliseconds: 50), () {
+      setState(() {
+        _controller.animateTo(0.1,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
+      });
     });
   }
 
@@ -85,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           const SizedBox(height: 20),
                           babyState == null
-                              ? const EmptyDetail()
+                              ? SelectLangWidget(
+                                  closeBottomWidget: closeBottomWidget)
                               : DetailWidget(babyState: babyState!),
                         ],
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_ease_app/models/baby_state.dart';
 import 'package:hear_ease_app/models/detail_info_render.dart';
+import 'package:hear_ease_app/models/language.dart';
 
 class DetailWidget extends StatefulWidget {
   final BabyState babyState;
@@ -12,15 +13,32 @@ class DetailWidget extends StatefulWidget {
 
 class _DetailWidgetState extends State<DetailWidget> {
   late DetailInfoRender info;
+  bool isInit = false;
+  final LanguageService _lang = LanguageService();
+
+  Future<void> init() async {
+    var lang = await _lang.getLanguage();
+    lang ??= 'EN'; // 언어가 선택되지 않았다면 영어를 보여준다.
+    info = DetailInfoRender(babyState: widget.babyState, lang: lang);
+    setState(() {
+      isInit = true;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    info = DetailInfoRender(babyState: widget.babyState);
+    init();
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
+    if (isInit == false) {
+      return const SizedBox(width: 1, height: 1);
+    }
+
     return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -36,7 +54,7 @@ class _DetailWidgetState extends State<DetailWidget> {
               borderRadius: BorderRadius.all(Radius.circular(25.0)),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hear_ease_app/screens/home.dart';
-// import 'package:hear_ease_app/screens/splash.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
