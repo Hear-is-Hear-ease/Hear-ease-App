@@ -15,3 +15,11 @@
 말소리, 반려동물 소리에는 반응하지 않으며 오직 **아기울음 소리**가 감지될 경우에 사용자에게 알림을 전송한다.
 
 아기울음 소리 원인은 'sad', 'hug', 'diaper', 'hungry', 'sleepy', 'awake', 'uncomfortable', 총 7가지로 분류한다.
+
+<br>
+
+주의: 아기울음 소리의 원인을 분석하기 위해 아기울음 소리가 감지되면 백앤드로 녹음된 음성 파일을 전송한다.
+
+백앤드에 연결하기 위해서는 현재 IP주소를 .env 파일의 API_BASE_ROOT에 7701 port로 입력해주어야 한다.
+
+**Backend github**: https://github.com/jaewonE/hear_ease_backend
