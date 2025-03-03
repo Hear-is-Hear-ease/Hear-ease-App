@@ -1,5 +1,7 @@
 ## 청각장애인 부모를 위한 아기 울음소리 감지 및 범주 분류
 
+[Hear-is, Hear-ease](https://github.com/Hear-is-Hear-ease/.github)의 어플리케이션 레포지토리.
+
 ### Hear-is Hear-ease 어플리케이션.
 
 - 소속: 서울과학기술대학교 데이터청년 캠퍼스 01조
@@ -21,5 +23,3 @@
 주의: 아기울음 소리의 원인을 분석하기 위해 아기울음 소리가 감지되면 백앤드로 녹음된 음성 파일을 전송한다.
 
 백엔드에 연결하기 위해서는 현재 IP주소를 .env 파일의 API_BASE_ROOT에 7701 port로 입력해주어야 한다.
-
-**Backend github**: https://github.com/jaewonE/hear_ease_backend
