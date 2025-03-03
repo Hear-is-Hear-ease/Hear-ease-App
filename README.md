@@ -1,6 +1,6 @@
 ## 청각장애인 부모를 위한 아기 울음소리 감지 및 범주 분류
 
->[Hear-is, Hear-ease](https://github.com/Hear-is-Hear-ease/.github)의 어플리케이션 레포지토리.
+>[Hear-is, Hear-ease](https://github.com/Hear-is-Hear-ease)의 어플리케이션 레포지토리.
 
 본 프로젝트는 **기술을 통한 사회적 복지 실현**이라는 목표 아래, **청각장애인 부모**가 아기의 울음을 인지하고 적절한 솔루션을 제공받을 수 있도록 돕는 **아기 울음소리 감지 및 울음 원인 분류 어플리케이션**을 개발하는 것을 목적으로 합니다.
 
